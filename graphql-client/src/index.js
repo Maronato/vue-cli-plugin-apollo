@@ -90,7 +90,7 @@ export function createApolloClient ({
     link = authLink.concat(link)
 
     if (preAuthLinks.length) {
-      link = from(preAuthLinks).concat(authLink)
+      link = from(preAuthLinks).concat(link)
     }
   }
 
@@ -121,8 +121,8 @@ export function createApolloClient ({
     if (wsEndpoint) {
       wsClient = new SubscriptionClient(wsEndpoint, {
         reconnect: true,
-        connectionParams: () => {
-          const Authorization = getAuth(tokenName)
+        connectionParams: async () => {
+          const Authorization = await getAuth(tokenName)
           return Authorization ? { Authorization, headers: { Authorization } } : {}
         },
       })
